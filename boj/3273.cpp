@@ -18,14 +18,13 @@ int main() {
     for (int i = 0; i < n; i++)cin >> arr[i];
     int x;
     cin >> x;
+    int left = 0, right = n - 1;
     sort(&arr[0], &arr[n]);
     int c = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (arr[i] + arr[j] == x)c++;
-            else if (arr[i] + arr[j] > x)break;
-        }
+    while (left < right) {
+        if (arr[left] + arr[right] == x) { c++; right--; }
+        else if (arr[left] + arr[right] > x) { right--; }
+        else { left++; }
     }
     cout << c;
-
 }
