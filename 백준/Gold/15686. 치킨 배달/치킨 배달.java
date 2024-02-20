@@ -92,10 +92,8 @@ public class Main {
 				
 				sum += min;
 				
-				if(sum == -10) {
-					int debug = 5;
-					
-					debug = 1;
+				if(sum >= resultMin) {
+					return;
 				}
 				
 			}
