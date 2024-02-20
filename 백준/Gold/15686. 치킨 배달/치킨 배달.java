@@ -70,11 +70,9 @@ public class Main {
 	
 	public static void back(int idx, int count) {
 		
-		if(count > M) {
-			return;
-		}
 		
-		if(idx == stores.size() && (count >= 1)) {
+		
+		if(count == M) {
 			
 			int sum = 0;
 			
@@ -113,7 +111,7 @@ public class Main {
 			visit[i] = 1;
 			back(i+1, count+1);
 			visit[i] = 0;
-			back(i+1, count);
+//			back(i+1, count);
 		}
 	}
 }
