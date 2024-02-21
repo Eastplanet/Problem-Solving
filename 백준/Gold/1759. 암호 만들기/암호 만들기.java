@@ -60,24 +60,12 @@ public class Main {
 				return;
 			}
 			
-			boolean incCheck = true;
-			for(int i=0;i<L-1;i++) {
-				char now = arr[word[i]];
-				char next = arr[word[i+1]];
-				if(now-'a' <= next-'a') {
-					continue;
-				}
-				
-				incCheck = false;
-				break;
-			}
 			
-			if(incCheck == true) {
-				for(int i=0;i<L;i++) {
-					sb.append(arr[word[i]]);
-				}
-				sb.append("\n");
+			for(int i=0;i<L;i++) {
+				sb.append(arr[word[i]]);
 			}
+			sb.append("\n");
+			
 
 			return;
 		}
