@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.StringTokenizer;
@@ -13,7 +14,7 @@ public class Solution {
 	static int[] dx = { 0, 0, 1, -1 };
 	static int[] dy = { 1, -1, 0, 0 };
 
-	static class Cell implements Comparable<Cell> {
+	static class Cell{
 		int y, x, power, wakeTime;
 		boolean isDie;
 
@@ -25,15 +26,8 @@ public class Solution {
 		}
 
 		@Override
-		public int compareTo(Cell o) {
-			return o.power - this.power;
-		}
-
-		
-
-		@Override
 		public int hashCode() {
-			final int prime = 523;
+			final int prime = 31;
 			int result = 1;
 			result = prime * result + x;
 			result = prime * result + y;
@@ -63,6 +57,14 @@ public class Solution {
 		}
 
 	}
+	
+	static Comparator<Cell> comp = new Comparator<Cell>() {
+		
+		@Override
+		public int compare(Cell o1, Cell o2) {
+			return o2.power - o1.power;
+		}
+	};
 
 	public static void main(String[] args) throws Exception {
 		StringBuilder sb = new StringBuilder();
@@ -72,7 +74,7 @@ public class Solution {
 
 			for (int k = 0; k <= K; k++) {
 				ArrayList<Cell> cells = new ArrayList<>(hs);
-				Collections.sort(cells);
+				Collections.sort(cells, comp);
 
 				for (Cell cell : cells) {
 					if (cell.isDie)
