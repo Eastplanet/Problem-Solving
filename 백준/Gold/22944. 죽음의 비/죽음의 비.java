@@ -41,9 +41,9 @@ public class Main {
 			Status curr = q.poll();
 			
 			//가지치기
-//			if(curr.dist > minDist) {
-//				continue;
-//			}
+			if(curr.dist > minDist) {
+				continue;
+			}
 			
 			// 1. 안전 지대로 갈 수 있는지 확인
 			if(canGo(curr.pos, end, curr.hp+curr.umbHP)) {
