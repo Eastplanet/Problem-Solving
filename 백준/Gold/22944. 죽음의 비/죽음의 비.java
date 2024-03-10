@@ -9,17 +9,18 @@ public class Main {
 	static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	
 	static int N,H,D, minDist = Integer.MAX_VALUE;
-	static Integer[] start = new Integer[2];
-	static Integer[] end = new Integer[2];
-	static ArrayList<Integer[]>u = new ArrayList<>();
+	static int[] start = new int[2];
+	static int[] end = new int[2];
+	static ArrayList<int[]>u = new ArrayList<>();
 	
+	//현재 위치, 현재까지 온 거리, 이때 까지 방문한 우산들, 현재 체력, 현재 우산 내구도
 	static class Status{
-		Integer[] pos;
+		int[] pos;
 		int dist;
 		int[] visited;
 		int hp;
 		int umbHP;
-		public Status(Integer[] pos, int dist, int[] visited, int hp, int umbHP) {
+		public Status(int[] pos, int dist, int[] visited, int hp, int umbHP) {
 			super();
 			this.pos = pos;
 			this.dist = dist;
@@ -40,10 +41,10 @@ public class Main {
 		while(!q.isEmpty()) {
 			Status curr = q.poll();
 			
-			//가지치기
-			if(curr.dist > minDist) {
-				continue;
-			}
+			//가지치기를 해도 시간이 똑같음... 머지?
+//			if(curr.dist > minDist) {
+//				continue;
+//			}
 			
 			// 1. 안전 지대로 갈 수 있는지 확인
 			if(canGo(curr.pos, end, curr.hp+curr.umbHP)) {
@@ -92,13 +93,13 @@ public class Main {
 	
 	
 	// 거리가 현재 체력보다 크다면 갈 수 없음
-	static boolean canGo(Integer[] start, Integer[] end, int leftHp) {
+	static boolean canGo(int[] start, int[] end, int leftHp) {
 		int dist = getDist(start, end);
 		if(dist > leftHp)return false;
 		return true;
 	}
 	
-	static int getDist(Integer[] a, Integer[]b) {
+	static int getDist(int[] a, int[]b) {
 		return Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1]);
 	}
 	
@@ -120,7 +121,7 @@ public class Main {
 					end[1] = j;
 				}
 				else if(tmp == 'U') {
-					u.add(new Integer[] {i,j});
+					u.add(new int[] {i,j});
 				}
 			}
 		}
