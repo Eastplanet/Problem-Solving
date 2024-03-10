@@ -28,7 +28,7 @@ public class Main {
 		}
 		
 		
-		back(0,0,0);
+		back(0,0);
 		
 		if(result == Integer.MAX_VALUE) {
 			System.out.println(-1);
@@ -41,12 +41,7 @@ public class Main {
 		
 	}
 	
-	static void back(int x,int y, int usedPaper) {
-		
-		if(x==10) {
-			x = 0;
-			y++;
-		}
+	static void back(int y, int usedPaper) {
 		
 		if(y==10) {
 			if(result > usedPaper) {
@@ -65,7 +60,7 @@ public class Main {
 					if(canAttach(j, i, k+1)) {
 						leftPaper[k]--;
 						fillPaper(j, i, k+1, 0);
-						back(j+1,i,usedPaper+1);
+						back(i,usedPaper+1);
 						fillPaper(j, i, k+1, 1);
 						leftPaper[k]++;
 					}
