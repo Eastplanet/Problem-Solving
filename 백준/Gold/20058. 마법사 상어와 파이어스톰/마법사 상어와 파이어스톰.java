@@ -5,7 +5,6 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-
 	/*
 	 * 착하고 잘생긴 태훈이 형이 내 코드를 망치지 않을 거라고 생각해 못 봤어
 	 */
@@ -13,7 +12,7 @@ public class Main {
 	static int[][] map;
 	static int[] dx = { 0, 0, 1, -1 };
 	static int[] dy = { 1, -1, 0, 0 };
-	static int[] last;
+	static int last;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -23,8 +22,8 @@ public class Main {
 		N = (int) Math.pow(2, N);
 		Q = Integer.parseInt(st.nextToken());
 		map = new int[N][N];
-		
-		if(N==2) {
+
+		if (N == 2) {
 			return;
 		}
 		for (int i = 0; i < N; i++) {
@@ -39,8 +38,8 @@ public class Main {
 			int L = Integer.parseInt(st.nextToken());
 			fireStorm(L);
 		}
-		System.out.println(last[0]);
-		System.out.println(last[1]);
+		System.out.println(last);
+		System.out.println(getBigIce());
 	}
 
 	static void fireStorm(int L) {
@@ -101,7 +100,7 @@ public class Main {
 
 	}
 
-	static int[] getIce() {
+	static int getIce() {
 
 		int totalIce = 0;
 
@@ -137,6 +136,11 @@ public class Main {
 			}
 		}
 
+		
+		return totalIce;
+	}
+	
+	static int getBigIce() {
 		int maxBigIce = 0;
 
 		boolean[][] visited = new boolean[N][N];
@@ -175,7 +179,8 @@ public class Main {
 				}
 			}
 		}
-		return new int[] { totalIce, maxBigIce };
+		
+		return maxBigIce;
 	}
 
 	static boolean isIn(int x, int y) {
