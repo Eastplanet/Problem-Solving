@@ -19,7 +19,7 @@ public class Main {
 	static Pos bossPos;
 	static int bossHP, totalDps, playerCnt;
 	static Map<Character, Integer> nameToDps;
-	static int nowSec;
+	static int nowSec = 1;
 	static boolean alreadyAtk;
 
 	
@@ -56,7 +56,7 @@ public class Main {
 		init();
 		
 		Queue<Node> q = new ArrayDeque<>();
-		q.add(new Node(0, bossPos));
+		q.add(new Node(1, bossPos));
 		visited[bossPos.y][bossPos.x] =true;
 		
 		//플레이어를 찾아 다님
@@ -65,7 +65,7 @@ public class Main {
 			
 			// 초가 지났을 때 체력 업데이트
 			// 큐에는 초가 증가순으로 쌓여 있음
-			// 0초에서 1초로 된다면 이후는 다 1초 이상임
+			// 1초에서 2초로 된다면 이후는 다 1초 이상임
 			if(cur.second != nowSec) {
 				nowSec = cur.second;
 				bossHP -= totalDps;
