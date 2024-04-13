@@ -21,7 +21,6 @@ public class Main {
 	static int R, C;
 	static char[][] map;
 	static boolean[][] visited;
-//	static Queue<Pos> nextq;
 	
 	// 두 거위의 위치
 	static Pos[] L;
@@ -39,14 +38,9 @@ public class Main {
 				}
 			}
 		}
-		
-		
-		
-		
 		// 최초 1번은 R * C 만큼 순회하며 BFS를 돌린다.
 		// 이후에는 nextq를 이용해서 이 큐에 들어있는 값으로만 BFS 돌린다
 		// 한번 visited한 곳은 갈 필요가 없기 때문
-		
 		
 		Queue<Pos> q = new ArrayDeque<>();
 		visited = new boolean[R][C];
@@ -59,14 +53,7 @@ public class Main {
 			}
 		}
 		
-		int time = 0;
-		// 바로 만나는 경우???
-		if(Pos.isEqual(find(L[0]), find(L[1]))) {
-			System.out.println(time);
-			return;
-		}
-		
-		time++;
+		int time = 1;
 		
 		while(true) {
 			
@@ -78,7 +65,6 @@ public class Main {
 			}
 			time++;
 		}
-		
 		System.out.println(time);
 	}
 	
@@ -118,7 +104,6 @@ public class Main {
 		map = new char[R][C];
 		u = new Pos[R][C];
 		
-//		nextq = new ArrayDeque<>();
 		for (int i = 0; i < R; i++) {
 			for (int j = 0; j < C; j++) {
 				u[i][j] = new Pos(-1, -1);
@@ -161,7 +146,6 @@ public class Main {
 		a = find(a);
 		b = find(b);
 		if (a.x == b.x && a.y == b.y)return;
-		
 		u[b.y][b.x].x = a.x;
 		u[b.y][b.x].y = a.y;
 	}
