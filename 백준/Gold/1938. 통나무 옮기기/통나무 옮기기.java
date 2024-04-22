@@ -1,269 +1,238 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
+import java.util.Deque;
 
 public class Main {
-
 	static int N;
-	static int arr[][], visited[][][];
-	static Train startTrain, goalTrain;
-	static int[] dx = { 0, 0, 1, -1 };
-	static int[] dy = { 1, -1, 0, 0 };
+	static int[][] deltas = { { -1, 0 }, { 0, -1 } };
+	static int[][] deltas8 = { { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 }, { 0, -1 } };
+	static int[] fmOne = { -1, 1 };
+	static String[][] map;
 
-	public static void main(String[] args) throws Exception {
-		init();
-
-		Queue<Train> q = new ArrayDeque<>();
-		q.add(startTrain);
-		visited[startTrain.pos.y][startTrain.pos.x][startTrain.dir] = 1;
-
-		while (!q.isEmpty()) {
-			Train cur = q.poll();
-			
-			if(cur.pos.y == goalTrain.pos.y &&
-			   cur.pos.x == goalTrain.pos.x &&
-			   cur.dir   == goalTrain.dir) {
-				System.out.println(cur.mvCount);
-				return;
-			}
-
-			if (canRotate(cur)) {
-				Train tmp = getTrain(cur);
-				tmp.tranDir();
-				if (visited[tmp.pos.y][tmp.pos.x][tmp.dir] == 0) {
-					visited[tmp.pos.y][tmp.pos.x][tmp.dir] = 1;
-					tmp.mvCount = cur.mvCount + 1;
-					q.add(tmp);
-				}
-			}
-			if (canU(cur)) {
-				Train tmp = getTrain(cur);
-				tmp.pos.y = tmp.pos.y - 1;
-
-				if (visited[tmp.pos.y][tmp.pos.x][tmp.dir] == 0) {
-					visited[tmp.pos.y][tmp.pos.x][tmp.dir] = 1;
-					tmp.mvCount = cur.mvCount + 1;
-					q.add(tmp);
-				}
-			}
-			if (canD(cur)) {
-				Train tmp = getTrain(cur);
-				tmp.pos.y = tmp.pos.y + 1;
-				
-				if (visited[tmp.pos.y][tmp.pos.x][tmp.dir] == 0) {
-					visited[tmp.pos.y][tmp.pos.x][tmp.dir] = 1;
-					tmp.mvCount = cur.mvCount + 1;
-					q.add(tmp);
-				}
-			}
-			if(canL(cur)) {
-				Train tmp = getTrain(cur);
-				tmp.pos.x = tmp.pos.x - 1;
-				
-				if (visited[tmp.pos.y][tmp.pos.x][tmp.dir] == 0) {
-					visited[tmp.pos.y][tmp.pos.x][tmp.dir] = 1;
-					tmp.mvCount = cur.mvCount + 1;
-					q.add(tmp);
-				}
-			}
-			if(canR(cur)) {
-				Train tmp = getTrain(cur);
-				tmp.pos.x = tmp.pos.x + 1;
-				
-				if (visited[tmp.pos.y][tmp.pos.x][tmp.dir] == 0) {
-					visited[tmp.pos.y][tmp.pos.x][tmp.dir] = 1;
-					tmp.mvCount = cur.mvCount + 1;
-					q.add(tmp);
-				}
-			}
-		}
-		
-		System.out.println("0");
-
-	}
-	
-	static boolean canL(Train t) {
-		if (t.dir == 1) {
-			// 위로 한칸 그리고 오른쪽 3칸이 넉넉한지
-			for (int i = t.pos.y - 1; i <= t.pos.y + 1; i++) {
-				if (canGo(i,t.pos.x-1) == false) {
-					return false;
-				}
-			}
-
-		} else {
-			// 오른쪽 2칸 앞이 넉넉하진
-			if (canGo(t.pos.y,t.pos.x-2) == false) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	static boolean canR(Train t) {
-		if (t.dir == 1) {
-			// 위로 한칸 그리고 오른쪽 3칸이 넉넉한지
-			for (int i = t.pos.y - 1; i <= t.pos.y + 1; i++) {
-				if (canGo(i,t.pos.x+1) == false) {
-					return false;
-				}
-			}
-
-		} else {
-			// 오른쪽 2칸 앞이 넉넉하진
-			if (canGo(t.pos.y,t.pos.x+2) == false) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	static boolean canD(Train t) {
-		if (t.dir == 0) {
-			// 아래로 한칸 그리고 좌우 3칸이 넉넉한지
-			for (int j = t.pos.x - 1; j <= t.pos.x + 1; j++) {
-				if (canGo(t.pos.y + 1, j) == false) {
-					return false;
-				}
-			}
-
-		} else {
-			// 아래로 2칸 앞이 넉넉하진
-			if (canGo(t.pos.y + 2, t.pos.x) == false) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	static boolean canU(Train t) {
-		if (t.dir == 0) {
-			// 위로 한칸 그리고 좌우 3칸이 넉넉한지
-			for (int j = t.pos.x - 1; j <= t.pos.x + 1; j++) {
-				if (canGo(t.pos.y - 1, j) == false) {
-					return false;
-				}
-			}
-
-		} else {
-			// 위로 2칸 앞이 넉넉하진
-			if (canGo(t.pos.y - 2, t.pos.x) == false) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	static boolean canRotate(Train t) {
-
-		for (int i = t.pos.y - 1; i <= t.pos.y + 1; i++) {
-			for (int j = t.pos.x - 1; j <= t.pos.x + 1; j++) {
-				if (canGo(i, j) == false) {
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-	static Train getTrain(Train t) {
-		Train tmp = new Train();
-		tmp.pos = new Pos(t.pos.y, t.pos.x);
-		tmp.dir = t.dir;
-		return tmp;
-	}
-
-	// 밖이거나 나무가있으면 false
-	static boolean canGo(int y, int x) {
-		if (x < 0 || x >= N || y < 0 || y >= N)
-			return false;
-		if (arr[y][x] == 1)
-			return false;
-		return true;
-	}
-
-	static void init() throws Exception {
+	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(in.readLine());
-
-		char map[][] = new char[N][N];
-		arr = new int[N][N];
-		visited = new int[N][N][2];
-
-		List<Pos> start = new ArrayList<>();
-		List<Pos> end = new ArrayList<>();
-		for (int i = 0; i < N; i++) {
-			String tmp = in.readLine();
-			for (int j = 0; j < N; j++) {
-				map[i][j] = tmp.charAt(j);
-
-				if (map[i][j] == 'B') {
-					map[i][j] = '0';
-					start.add(new Pos(i, j));
-				} else if (map[i][j] == 'E') {
-					map[i][j] = '0';
-					end.add(new Pos(i, j));
+		// 무조건 중간 값이 위치를 결정함
+		map = new String[N][N];
+		int bn = 0;
+		int en = 0;
+		// R, C, 방향을 저장
+		int[] start = new int[3];
+		int[] end = new int[3];
+		// 입력 전처리
+		for (int r = 0; r < N; r++) {
+			map[r] = in.readLine().split("");
+			for (int c = 0; c < N; c++) {
+				if (map[r][c].equals("B")) {
+					bn++;
+					if (bn == 2) {
+						start[0] = r;
+						start[1] = c;
+						for (int d = 0; d < 2; d++) {
+							int nr = r + deltas[d][0];
+							int nc = c + deltas[d][1];
+							if (isIn(nr, nc) && map[nr][nc].equals("B")) {
+								start[2] = d;
+							}
+						}
+					}
 				}
-
-				arr[i][j] = map[i][j] - '0';
+				if (map[r][c].equals("E")) {
+					en++;
+					if (en == 2) {
+						end[0] = r;
+						end[1] = c;
+						for (int d = 0; d < 2; d++) {
+							int nr = r + deltas[d][0];
+							int nc = c + deltas[d][1];
+							if (isIn(nr, nc) && map[nr][nc].equals("E")) {
+								end[2] = d;
+							}
+						}
+					}
+				}
 			}
 		}
-		Collections.sort(start);
-		Collections.sort(end);
 
-		startTrain = new Train();
-		startTrain.pos = start.get(1);
-		// x가 같다면 y방향으로 놓아져있다 -> 세로이다 -> 1
-		if (start.get(0).x == start.get(1).x) {
-			startTrain.dir = 1;
-		} else {
-			startTrain.dir = 0;
+		boolean[][][] isVisited = new boolean[N][N][2];
+		Deque<int[]> q = new ArrayDeque<>();
+		// R, C, type, moveCnt
+		q.offer(new int[] { start[0], start[1], start[2], 0 });
+		isVisited[start[0]][start[1]][start[2]] = true;
+		while (!q.isEmpty()) {
+			int[] now = q.poll();
+			for (int i = 1; i <= 5; i++) {
+				int[] result = move(now[0], now[1], now[2], i);
+				if (result[3] == 1) { // 움직일 수 있는 경우
+					if (isVisited[result[0]][result[1]][result[2]]) continue; // 방문체크
+					if (result[0] == end[0] && result[1] == end[1] && result[2] == end[2]) { // 종료 조건
+						System.out.println(now[3] + 1);
+						System.exit(0);
+					}
+					isVisited[result[0]][result[1]][result[2]] = true;
+					q.offer(new int[] { result[0], result[1], result[2], now[3] + 1 });
+				}
+			}
 		}
-
-		goalTrain = new Train();
-		goalTrain.pos = end.get(1);
-		// x가 같다면 y방향으로 놓아져있다 -> 세로이다 -> 1
-		if (end.get(0).x == end.get(1).x) {
-			goalTrain.dir = 1;
-		} else {
-			goalTrain.dir = 0;
-		}
+		System.out.println(0);
 	}
 
-	static class Train {
-		Pos pos;
-		int dir;
-		int mvCount;
-
-		void tranDir() {
-			if (dir == 0) {
-				dir = 1;
-			} else {
-				dir = 0;
+	static int[] move(int r, int c, int dir, int type) {
+		// result : r, c, dir, isUse
+		int[] result = new int[4];
+		switch (type) {
+		case 1:
+			if (dir == 0) { // 세로로 놓인 경우
+				int nr = r - 2;
+				if (isIn(nr, c) && !map[nr][c].equals("1")) {
+					result[0] = r - 1;
+					result[1] = c;
+					result[2] = dir;
+					result[3] = 1; // 사용 가능
+				}
+			} else if (dir == 1) { // 가로로 놓인 경우
+				int nr = r - 1;
+				if (isIn(nr, c)) {
+					boolean flag = true;
+					// 3개의 위치 모두 탐색해야함
+					// 현 위치
+					if (map[nr][c].equals("1"))
+						flag = false;
+					for (int d = 0; d < 2; d++) {
+						// 양 옆
+						int nc = c + fmOne[d];
+						if (isIn(nr, nc) && map[nr][nc].equals("1"))
+							flag = false;
+					}
+					if (flag) { // 양 옆 모두 1이 아니면
+						result[0] = r - 1;
+						result[1] = c;
+						result[2] = dir;
+						result[3] = 1; // 사용 가능
+					}
+				}
 			}
+			break;
+		case 2:
+			if (dir == 0) { // 세로로 놓인 경우
+				int nr = r + 2;
+				if (isIn(nr, c) && !map[nr][c].equals("1")) {
+					result[0] = r + 1;
+					result[1] = c;
+					result[2] = dir;
+					result[3] = 1; // 사용 가능
+				}
+			} else if (dir == 1) { // 가로로 놓인 경우
+				int nr = r + 1;
+				if (isIn(nr, c)) {
+					boolean flag = true;
+					// 3개의 위치 모두 탐색해야함
+					// 현 위치
+					if (map[nr][c].equals("1"))
+						flag = false;
+					for (int d = 0; d < 2; d++) {
+						// 양 옆
+						int nc = c + fmOne[d];
+						if (isIn(nr, nc) && map[nr][nc].equals("1"))
+							flag = false;
+					}
+					if (flag) {
+						result[0] = r + 1;
+						result[1] = c;
+						result[2] = dir;
+						result[3] = 1; // 사용 가능
+					}
+				}
+			}
+			break;
+		case 3:
+			if (dir == 0) { // 세로로 놓인 경우
+				int nc = c - 1;
+				if (isIn(r, nc)) {
+					boolean flag = true;
+					if (map[r][nc].equals("1"))
+						flag = false;
+					for (int d = 0; d < 2; d++) {
+						// 위 아래
+						int nr = r + fmOne[d];
+						if (isIn(nr, nc) && map[nr][nc].equals("1"))
+							flag = false;
+					}
+					if (flag) { // 양 옆 모두 1이 아니면
+						result[0] = r;
+						result[1] = c - 1;
+						result[2] = dir;
+						result[3] = 1; // 사용 가능
+					}
+				}
+			} else if (dir == 1) { // 가로로 놓인 경우
+				int nc = c - 2;
+				if (isIn(r, nc) && !map[r][nc].equals("1")) {
+					result[0] = r;
+					result[1] = c - 1;
+					result[2] = dir;
+					result[3] = 1; // 사용 가능
+				}
+			}
+			break;
+		case 4:
+			if (dir == 0) { // 세로로 놓인 경우
+				int nc = c + 1;
+				if (isIn(r, nc)) {
+					boolean flag = true;
+					if (map[r][nc].equals("1"))
+						flag = false;
+					for (int d = 0; d < 2; d++) {
+						// 위 아래
+						int nr = r + fmOne[d];
+						if (isIn(nr, nc) && map[nr][nc].equals("1"))
+							flag = false;
+					}
+					if (flag) {
+						result[0] = r;
+						result[1] = c + 1;
+						result[2] = dir;
+						result[3] = 1; // 사용 가능
+					}
+				}
+			} else if (dir == 1) { // 가로로 놓인 경우
+				int nc = c + 2;
+				if (isIn(r, nc) && !map[r][nc].equals("1")) {
+					result[0] = r;
+					result[1] = c + 1;
+					result[2] = dir;
+					result[3] = 1; // 사용 가능
+				}
+			}
+			break;
+		case 5:
+			boolean flag = true;
+			for (int d = 0; d < 8; d++) {
+				int nr = r + deltas8[d][0];
+				int nc = c + deltas8[d][1];
+				if (!isIn(nr, nc)) {
+					flag = false;
+					break;
+				}
+				if (map[nr][nc].equals("1")) {
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				result[0] = r;
+				result[1] = c;
+				result[2] = (dir + 1) % 2;
+				result[3] = 1;
+			}
+			break;
 		}
+		return result;
 	}
 
-	static class Pos implements Comparable<Pos> {
-		int y, x;
-
-		public Pos(int y, int x) {
-			this.y = y;
-			this.x = x;
-		}
-
-		@Override
-		public int compareTo(Pos o) {
-			if (this.y == o.y) {
-				return this.x - o.x;
-			} else {
-				return this.y - o.y;
-			}
-		}
+	static boolean isIn(int r, int c) {
+		return r >= 0 && r < N && c >= 0 && c < N;
 	}
 }
