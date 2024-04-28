@@ -28,11 +28,17 @@ class Solution {
         
         int maxOil = 0;
        
+        // 1. 생성은 한번 쓸 때 마다 초기화
+        //int alreadyMinning[] = new int[cnt];
         
         for(int j=0;j<M;j++){
             
             int sum = 0;
+            
+            //1. 생성은 한번 쓸 때 마다 초기화
             //Arrays.fill(alreadyMinning,0);
+            
+            //2. 쓸 때 마다 생성
             int alreadyMinning[] = new int[cnt];
             
             for(int i=0;i<N;i++){
