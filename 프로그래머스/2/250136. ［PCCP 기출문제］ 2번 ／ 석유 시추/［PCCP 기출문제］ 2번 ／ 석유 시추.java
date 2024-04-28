@@ -27,9 +27,10 @@ class Solution {
         
         
         int maxOil = 0;
+        ///
        
         // 1. 생성은 한번 쓸 때 마다 초기화
-        //int alreadyMinning[] = new int[cnt];
+        int alreadyMinning[] = new int[250000];
         
         for(int j=0;j<M;j++){
             
@@ -37,9 +38,12 @@ class Solution {
             
             //1. 생성은 한번 쓸 때 마다 초기화
             //Arrays.fill(alreadyMinning,0);
+            for(int k=0;k<250000;k++){
+                alreadyMinning[k] =0 ;
+            }
             
             //2. 쓸 때 마다 생성
-            int alreadyMinning[] = new int[cnt];
+            //int alreadyMinning[] = new int[250000];
             
             for(int i=0;i<N;i++){
                 if(land[i][j] == 1){
