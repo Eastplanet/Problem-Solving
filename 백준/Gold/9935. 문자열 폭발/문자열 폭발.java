@@ -26,7 +26,6 @@ public class Main {
 
 			char c = str.charAt(i);
 
-//			if(nextIdx >= bomb.length())break;
 			if (c == bomb.charAt(0)|| c == bomb.charAt(nextIdx)) {
 
 				bombStack.add(c);
@@ -35,8 +34,6 @@ public class Main {
 				else nextIdx++;
 				
 				if (nextIdx == bomb.length()) {
-					
-					if (bombStack.isEmpty()|| bombStack.size() < bomb.length()) continue;
 					
 					// 큐에서 bomb크기만큼 pop
 					for (int j = 0; j < bomb.length(); j++) bombStack.pop();
@@ -48,7 +45,6 @@ public class Main {
 					for (int j = 0; j < bomb.length(); j++) {
 						if (bomb.charAt(j) == top) nextIdx = j+1;
 					}
-					
 				}
 
 
