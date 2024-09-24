@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.security.cert.CollectionCertStoreParameters;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class Main {
+
+	static StringTokenizer st;
+	static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+	
+
+	public static void main(String[] args) throws Exception {
+
+		st = new StringTokenizer(in.readLine());
+	
+		int N = Integer.parseInt(st.nextToken());
+		int W = Integer.parseInt(st.nextToken());
+		int H = Integer.parseInt(st.nextToken());
+		int L = Integer.parseInt(st.nextToken());
+		
+		int a = W/L;
+		int b = H/L;
+		
+		int val = a*b;
+		val = Math.min(N, val);
+		System.out.println(val);
+		
+	}
+	
+	
+
+
+
+}
