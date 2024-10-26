@@ -1,41 +1,54 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String[] args) throws Exception{
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(in.readLine());
+
+	static StringTokenizer st;
+	static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+	public static void main(String[] args) throws Exception {
+	
+		st = new StringTokenizer(in.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int K = Integer.parseInt(st.nextToken());
 		
-		int[][] dp = new int[N+1][K+1];
-		int[][] items = new int[N+1][2];
+		int[][]arr = new int[N+1][K+1];
+		int[][] item = new int[N+1][2];
 		
 		for(int i=1;i<=N;i++) {
 			st = new StringTokenizer(in.readLine());
-			int w = Integer.parseInt(st.nextToken());
-			int v = Integer.parseInt(st.nextToken());
-			items[i][0] = w;
-			items[i][1] = v;
+			int W = Integer.parseInt(st.nextToken());
+			int V = Integer.parseInt(st.nextToken());
+			item[i][0] = W;
+			item[i][1] = V;
 		}
 		
+		
 		for(int i=1;i<=N;i++) {
-			for(int j=1;j<=K;j++) {
-				if(items[i][0] > j) {
-					dp[i][j] = dp[i-1][j];
-				}
-				else {
-					int v = items[i][1];
-					int w = items[i][0];
-					dp[i][j] = Math.max(v + dp[i-1][j-w], dp[i-1][j]);
+			for(int j=0;j<=K;j++) {
+				
+				arr[i][j] = arr[i-1][j];
+				
+				if(j-item[i][0] >= 0) {
+					arr[i][j] = Math.max(arr[i][j], arr[i-1][j-item[i][0]]+item[i][1]);
 				}
 			}
 		}
 		
-		System.out.println(dp[N][K]);
+		int result = 0;
+		for(int i=1;i<=N;i++) {
+			result = Math.max(arr[i][K], result);
+		}
+		
+		System.out.println(result);
+		
 		
 		
 		
 	}
+	
+
 }
