@@ -71,11 +71,6 @@ public class Main {
 				// 움직일 수 없으면 누가 이긴지 체크
 				if(P.pos.y == N-1) {
 					
-//					if(P.alreadyArive == false) {
-//						P.alreadyArive = true;
-//						continue;
-//					}
-					
 					endFlag = true;
 					isWhite = false;
 					break;
@@ -120,7 +115,7 @@ public class Main {
 		
 		King king = new King(0,kingPos);
 		
-//		visited[0][kingPos.y][kingPos.x] = 1;
+		visited[0][kingPos.y][kingPos.x] = 1;
 		
 		Q.add(king);
 		
@@ -180,7 +175,7 @@ public class Main {
 					continue;
 				}
 				
-//				visited[this.turn][goy][gox] = 1;
+				visited[this.turn][goy][gox] = 1;
 				
 				Pos pos = new Pos(gox,goy);
 				King king = new King(this.turn+1, pos);
