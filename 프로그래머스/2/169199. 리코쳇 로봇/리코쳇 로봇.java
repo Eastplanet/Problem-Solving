@@ -5,15 +5,14 @@ import java.util.*;
 
 class Solution {
     
-    public char[][] arr;
     public int H,W;
-    public int[][] visited;
     public Queue<Pos> q;
-    public int[] dx = {0,0,1,-1};
-    public int[] dy = {1,-1,0,0};
+    public char[][] arr;
+    public int[][] visited;
+    public int[] dx = {0, 0, 1, -1};
+    public int[] dy = {1, -1, 0, 0};
     
     public int solution(String[] board) {
-        
         init(board);
         return BFS();
     }
@@ -46,23 +45,17 @@ class Solution {
         
         int prevx = x;
         int prevy = y;
-        
         int gox = x + dx[delta];
         int goy = y + dy[delta];
         
         while(true){
             //범위 초과시 break
-            if(gox < 0 || gox>= W || goy < 0 || goy >= H){
-                break;
-            }
-            // D 만날 시 break
-            if(arr[goy][gox] == 'D'){
+            if(gox < 0 || gox>= W || goy < 0 || goy >= H || arr[goy][gox] == 'D'){
                 break;
             }
             
             prevx = gox;
             prevy = goy;
-            
             gox += dx[delta];
             goy += dy[delta];
         }
@@ -75,11 +68,12 @@ class Solution {
         W = board[0].length();
         arr = new char[H][W];
         visited = new int[H][W];
-        
         q = new ArrayDeque<>();
         
         for(int i=0;i<H;i++){
+            
             for(int j=0;j<W;j++){
+                
                 arr[i][j] = board[i].charAt(j);
                 if(arr[i][j]=='R'){
                     q.add(new Pos(j,i,0));
